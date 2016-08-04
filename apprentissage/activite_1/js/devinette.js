@@ -13,34 +13,43 @@ var solution = Math.floor(Math.random() * 100) + 1;
 // Décommentez temporairement cette ligne pour mieux vérifier le programme
 console.log("(La solution est " + solution + ")");
 
-// Fonction qui demande à l'utilisateur un nombre entre 1 et 100
+// Fonction qui demande à l'utilisateur un nombre entre 1 et 100 et renvoie la saisie
 var demande = function demande() {
   var saisie = Number(prompt("Saisie un nombre entre 1 et 100 : "));
   return saisie;
 };
 
-// Fonction qui compare le nombre donné et la solution
+// Fonction qui compare le nombre donné et la solution.
+// Retourn vrai si le nombre est le même que la solution.
+// Sinon cela retourne faux.
 var compare = function compare(nombre) {
+  var resultat = false;
   if (nombre > solution) {
     console.log(nombre + " est trop grand");
   } else if (nombre < solution) {
     console.log(nombre + " est trop petit");
   } else {
     console.log("Bravo, la solution était " + solution + " !");
+    resultat = true;
   }
+  return resultat;
 };
 
-// Début du programme : demande au joueur de saisir le chiffre estimé et le compare
+// Première demande (contrôle d'entrée de boucle)
 var nombreSaisi = demande();
-compare(nombreSaisi);
-// Si toujours pas trouvé, on boucle jusqu'à ce que le joueur y arrive ou qu'il ait dépassé 6 essais en tout
+var resultatComparaison = compare(nombreSaisi);
 var tentatives = 1;
-while ((nombreSaisi !== solution) && (tentatives < 6)) {
-  var nombreSaisi = demande();
-  compare(nombreSaisi);
+// Première tentative réussie ? C'est resultatComparaison qui nous le signale
+// Le joueur a dépassé le nombre d'essais ? C'est tentatives qui nous le dit
+// Soit l'un, soit l'autre nous fait sortir de la boucle.
+while ((resultatComparaison === false) && (tentatives < 6)) {
+  nombreSaisi = demande();
+  resultatComparaison = compare(nombreSaisi);
   tentatives += 1;
 }
-// Si le joueur a fait trop de tentatives et qu'il n'a pas trouvé au 6ième coup, on ne le laisse pas sur sa faim
+
+// Il faut penser que le joueur peut avoir réussi à la sixième tentative.
+// Donc on compare aussi avec la solution
 if ((tentatives >= 6) && (nombreSaisi !== solution)) {
   console.log("Perdu... la solution était " + solution);
 }
